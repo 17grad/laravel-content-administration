@@ -16,10 +16,14 @@ trait HasMedia
     public function registerCrudMediaConversions(Media $media = null)
     {
         foreach (config('fjord.mediaconversions.default') as $key => $value) {
-            $this->addMediaConversion($key)
-                ->width($value[0])
-                ->height($value[1])
-                ->sharpen($value[2]);
+            $media = $this->addMediaConversion($key);
+            if ($key == 'responsive') {
+                $media->withResponsiveImages();
+            } else {
+                $media->width($value[0])
+                    ->height($value[1])
+                    ->sharpen($value[2]);
+            }
         }
     }
 }
